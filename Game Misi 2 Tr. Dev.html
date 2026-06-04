@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S-T-A: Branch Crisis Simulator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;900&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --retro-bg: #ffd854;    /* Kuning cerah sesuai referensi */
+            --retro-panel: #ffffff; /* Panel putih bersih */
+            --retro-text: #0a3442;  /* Biru dongker tua untuk teks/border */
+            --retro-green: #2ec4b6; /* Mint/Hijau segar */
+            --retro-red: #F04C70;   /* Coral pink sesuai tombol utama */
+            --retro-yellow: #ffb703;
+            --retro-blue: #118ab2;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--retro-bg);
+            /* Pola dot grid sesuai referensi image_4d6bbe.jpg */
+            background-image: radial-gradient(#e6be3c 18%, transparent 19%);
+            background-size: 20px 20px;
+            color: var(--retro-text);
+            overflow-x: hidden;
+            user-select: none;
+        }
+
+        .title-styled {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 900;
+            font-style: italic;
+            color: #ffffff;
+            -webkit-text-stroke: 3px var(--retro-text);
+            text-shadow: 4px 4px 0px var(--retro-text);
+            letter-spacing: 0.5px;
+        }
+
+        .subtitle-styled {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 700;
+            color: var(--retro-red);
+            letter-spacing: 0.5px;
+        }
+
+        /* Panel melengkung tebal dengan bayangan padat 3D sesuai image_4d6bbe.jpg */
+        .pixel-borders {
+            border: 4px solid var(--retro-text);
+            box-shadow: 8px 8px 0px 0px var(--retro-text);
+            background-color: var(--retro-panel);
+            border-radius: 24px;
+        }
+
+        /* Tombol pink utama dengan efek tekan 3D */
+        .pixel-btn {
+            background-color: var(--retro-red);
+            color: #ffffff;
+            border: 4px solid var(--retro-text);
+            box-shadow: 0px 6px 0px 0px var(--retro-text);
+            transition: all 0.1s;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 900;
+            font-style: italic;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .pixel-btn:active {
+            transform: translateY(6px);
+            box-shadow: 0px 0px 0px 0px var(--retro-text);
+        }
+
+        .pixel-btn:disabled {
+            background-color: #cbd5e1;
+            color: #64748b;
+            border-color: #94a3b8;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0px 4px 0px 0px #94a3b8;
+        }
+
+        /* Tombol Pilihan Kalimat S-T-A */
+        .choice-btn {
+            background-color: #f8fafc;
+            color: var(--retro-text);
+            border: 3px solid var(--retro-text);
+            box-shadow: 0px 4px 0px 0px var(--retro-text);
+            text-align: left;
+            line-height: 1.5;
+            transition: all 0.15s;
+            border-radius: 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .choice-btn:hover {
+            border-color: var(--retro-red);
+            background-color: #f1f5f9;
+        }
+
+        .choice-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0px 0px 0px 0px var(--retro-text);
+        }
+
+        /* Barometer Tension Meter */
+        .meter-container {
+            width: 100%;
+            height: 28px;
+            background-color: #f1f5f9;
+            border: 4px solid var(--retro-text);
+            border-radius: 9999px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .meter-fill {
+            height: 100%;
+            width: 50%;
+            background: linear-gradient(90deg, var(--retro-green) 0%, #fbbf24 50%, var(--retro-red) 100%);
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .meter-markers {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10%;
+            pointer-events: none;
+        }
+        
+        .marker {
+            width: 3px;
+            height: 100%;
+            background-color: rgba(10, 52, 66, 0.15);
+        }
+
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+
+        .shake-active {
+            animation: shake 0.5s;
+            animation-iteration-count: 1;
+        }
+
+        .typing-text::after {
+            content: '▊';
+            animation: blink 1s step-start infinite;
+            color: var(--retro-red);
+        }
+
+        @keyframes blink { 50% { opacity: 0; } }
+
+        .hidden { display: none !important; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--retro-bg); }
+        ::-webkit-scrollbar-thumb { background: var(--retro-red); border-radius: 4px; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- AUDIO CONTROLS (Pill-shaped top-right) -->
+    <button id="btn-mute" class="fixed top-4 right-4 z-50 flex items-center gap-2 border-3 border-[#0a3442] rounded-xl px-4 py-2 text-xs font-bold bg-white text-[#0a3442] shadow-[3px_3px_0_0_#0a3442] hover:bg-gray-100 transition-all uppercase">
+        <span id="speaker-icon">🔊</span> <span class="font-black" style="font-family: 'Fredoka', sans-serif;">AUDIO</span>
+    </button>
+
+    <!-- ==================== GATEWAY SCREEN ==================== -->
+    <div id="screen-gateway" class="w-full max-w-2xl flex flex-col gap-6 fade-in">
+        <div class="text-center mb-2">
+            <h1 class="text-3xl md:text-5xl title-styled leading-none">EXECUTIVE FILTER</h1>
+            <p class="text-lg md:text-xl subtitle-styled mt-2 uppercase">FPD PROTOCOL</p>
+            <p class="text-xs md:text-sm font-semibold text-[#0a3442]/80 mt-1">Sistem Kalibrasi Komunikasi Manajerial.</p>
+        </div>
+
+        <div class="pixel-borders p-6 space-y-6">
+            <div>
+                <input type="text" id="input-nama" class="w-full bg-[#f8fafc] text-slate-800 font-semibold p-4 border-3 border-[#0a3442] rounded-2xl focus:outline-none focus:ring-4 focus:ring-pink-500/30 placeholder-[#8ea2a9] text-sm" placeholder="Nama Lengkap">
+            </div>
+            <div>
+                <input type="number" id="input-nik" class="w-full bg-[#f8fafc] text-slate-800 font-semibold p-4 border-3 border-[#0a3442] rounded-2xl focus:outline-none focus:ring-4 focus:ring-pink-500/30 placeholder-[#8ea2a9] text-sm" placeholder="Nomor Induk Karyawan">
+                <p id="nik-error" class="text-xs font-bold text-[var(--retro-red)] mt-2 hidden">⚠ NIK harus tepat 10 digit angka!</p>
+            </div>
+            <button id="btn-login" class="pixel-btn w-full py-4 text-sm mt-4 text-lg">AKSES SISTEM!</button>
+        </div>
+        <div class="text-center text-xs font-bold text-[#0a3442] mt-4">
+            Education Training Department © 2026
+        </div>
+    </div>
+
+    <!-- ==================== BRIEFING SCREEN ==================== -->
+    <div id="screen-briefing" class="w-full max-w-2xl flex flex-col gap-4 hidden">
+        <div class="pixel-borders p-6">
+            <h2 class="text-xl md:text-2xl subtitle-styled mb-4 border-b-2 border-dashed border-[#0a3442]/30 pb-2">MISSION BRIEFING</h2>
+            
+            <div class="space-y-4 text-xs md:text-sm leading-relaxed text-[#0a3442]">
+                <p class="text-[var(--retro-red)] font-bold text-sm">HOOK (WHY):</p>
+                <p class="font-medium">Setiap hari, konflik antar departemen membunuh produktivitas. Ego sektoral adalah musuh terbesar kita. Jika Anda gagal meredamnya, cabang ini hancur.</p>
+                
+                <p class="text-[var(--retro-blue)] font-bold mt-6 text-sm">OBJECTIVE:</p>
+                <p class="font-medium">Sebagai Supervisor Cabang, Anda akan menghadapi 10 situasi kritis (orang-orang yang emosi). Gunakan metode <span class="text-[var(--retro-green)] font-bold">S-T-A</span> untuk mematikan ego dan menciptakan Action Plan.</p>
+
+                <ul class="list-disc pl-5 space-y-2 mt-4 text-xs font-semibold">
+                    <li><span class="text-black font-bold">S (Share Facts):</span> Observasi objektif, tanpa menghakimi.</li>
+                    <li><span class="text-black font-bold">T (Tell Impact):</span> Sampaikan dampak pada tujuan bersama.</li>
+                    <li><span class="text-black font-bold">A (Ask Action):</span> Ajak berkolaborasi mencari solusi.</li>
+                </ul>
+
+                <p class="text-[var(--retro-red)] font-bold mt-6 text-sm">RULES:</p>
+                <p class="font-medium">Perhatikan <span class="text-white bg-red-600 px-2 py-0.5 rounded-lg">TENSION METER</span>. Salah pilih kata = Emosi meledak (Game Over level tersebut). Benar pilih kata = Emosi mendingin (Success).</p>
+            </div>
+            
+            <button id="btn-start-game" class="pixel-btn w-full py-4 text-sm mt-8 animate-pulse text-lg">SAYA SIAP (START)</button>
+        </div>
+    </div>
+
+    <!-- ==================== GAME SCREEN ==================== -->
+    <div id="screen-game" class="w-full max-w-2xl flex flex-col gap-4 hidden">
+        
+        <!-- HUD -->
+        <div class="pixel-borders p-4 flex flex-wrap justify-between items-center text-xs bg-[#f8fafc]">
+            <div class="flex items-center gap-4 w-full md:w-auto mb-2 md:mb-0 font-bold">
+                <div><span class="text-gray-500">OP:</span> <span id="hud-name" class="text-[var(--retro-blue)]">NAME</span></div>
+                <div><span class="text-gray-500">SCORE:</span> <span id="hud-score" class="text-[var(--retro-red)]">0</span></div>
+            </div>
+            <div class="w-full md:w-1/2 flex items-center gap-2 font-bold">
+                <span class="text-gray-500">PROG:</span>
+                <div class="flex-grow h-4 border-2 border-[#0a3442] relative bg-white rounded-full overflow-hidden">
+                    <div id="hud-progress-bar" class="h-full bg-gradient-to-r from-teal-400 to-emerald-400 w-0 transition-all"></div>
+                </div>
+                <span id="hud-progress-text" class="text-[var(--retro-text)]">0%</span>
+            </div>
+        </div>
+
+        <div id="badge-container" class="flex gap-2 text-2xl justify-center h-8">
+            <!-- Badges will appear here -->
+        </div>
+
+        <!-- TENSION METER -->
+        <div class="pixel-borders p-4 bg-red-50 text-center" id="game-arena">
+            <h3 class="text-xs font-bold mb-2 text-slate-500 uppercase tracking-wider">EGO / TENSION METER</h3>
+            <div class="meter-container mb-2">
+                <div id="tension-fill" class="meter-fill" style="width: 50%;"></div>
+                <div class="meter-markers">
+                    <div class="marker"></div><div class="marker"></div><div class="marker"></div>
+                </div>
+            </div>
+            <p id="tension-status" class="text-xs font-bold text-[var(--retro-yellow)] animate-pulse">WARNING: TENSION RISING</p>
+        </div>
+
+        <!-- DIALOGUE BOX -->
+        <div class="pixel-borders p-4 md:p-6 bg-white relative">
+            <div class="flex gap-4 mb-4 items-start">
+                <!-- Avatar -->
+                <div class="w-16 h-16 md:w-20 md:h-20 border-3 border-[#0a3442] flex items-center justify-center text-4xl bg-slate-100 rounded-2xl shadow-[3px_3px_0px_0px_#0a3442]" id="avatar">
+                    😡
+                </div>
+                <!-- Text -->
+                <div class="flex-1">
+                    <p class="text-xs font-bold text-[var(--retro-blue)] mb-1 uppercase tracking-wider" id="scenario-title">Kasus 1: Sales vs Ops</p>
+                    <p class="text-sm font-semibold leading-relaxed typing-text min-h-[60px]" id="enemy-dialogue">
+                        <!-- Dialogue typed here -->
+                    </p>
+                </div>
+            </div>
+
+            <!-- PLAYER CRAFTER -->
+            <div class="mt-6 border-t-2 border-dashed border-slate-200 pt-4">
+                <div class="flex justify-between items-center mb-3">
+                    <p class="text-xs font-bold text-[var(--retro-green)]">S-T-A CRAFTER <span id="current-phase-indicator" class="text-white bg-[#0a3442] px-2 py-0.5 rounded-lg text-[10px]">FASE: S</span></p>
+                    <p class="text-[10px] font-bold text-slate-400">Pilih kalimat respons (Tap)</p>
+                </div>
+                
+                <div id="built-sentence" class="bg-slate-50 border-2 border-[#0a3442] p-3 mb-4 text-xs md:text-sm min-h-[60px] text-slate-600 rounded-xl leading-relaxed">
+                    <span id="part-s" class="opacity-50">...</span> 
+                    <span id="part-t" class="opacity-50">...</span> 
+                    <span id="part-a" class="opacity-50">...</span>
+                </div>
+
+                <div class="flex flex-col gap-3" id="choices-container">
+                    <!-- Choices injected here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== FEEDBACK MODAL ==================== -->
+    <div id="modal-feedback" class="fixed inset-0 bg-[#0a3442]/80 z-50 flex items-center justify-center p-4 hidden">
+        <div class="pixel-borders p-6 max-w-lg w-full text-center" id="modal-content">
+            <h2 id="modal-title" class="text-xl md:text-2xl font-bold mb-2">TITLE</h2>
+            <div id="modal-icon" class="text-6xl mb-4">💥</div>
+            <p id="modal-desc" class="text-xs md:text-sm font-semibold leading-relaxed mb-6 text-slate-600">Description here.</p>
+            
+            <div id="action-plan-doc" class="hidden bg-[#f8fafc] text-slate-800 p-4 mb-6 border-2 border-[#0a3442] rounded-xl text-left text-xs">
+                <h4 class="font-bold border-b border-dashed border-slate-300 pb-1 mb-2 uppercase text-[#0a3442]">📝 ACTION PLAN TERBENTUK</h4>
+                <p id="action-plan-text" class="italic">Solusi kolaboratif tercapai.</p>
+            </div>
+
+            <button id="btn-modal-next" class="pixel-btn w-full py-3 text-sm">CONTINUE</button>
+        </div>
+    </div>
+
+    <!-- ==================== DEBRIEF SCREEN ==================== -->
+    <div id="screen-debrief" class="w-full max-w-3xl flex flex-col gap-4 hidden">
+        <div class="pixel-borders p-6 text-center">
+            <h2 class="text-2xl md:text-4xl subtitle-styled mb-2">SIMULASI SELESAI</h2>
+            <p class="text-xs md:text-sm font-bold text-slate-500 mb-6" id="debrief-name">Supervisor: -</p>
+            
+            <div class="grid grid-cols-2 gap-4 mb-8 text-left max-w-md mx-auto">
+                <div class="bg-slate-50 p-4 border-2 border-[#0a3442] rounded-2xl">
+                    <p class="text-[10px] font-bold text-slate-400">FINAL SCORE</p>
+                    <p class="text-2xl font-bold text-[var(--retro-red)]" id="final-score">0</p>
+                </div>
+                <div class="bg-slate-50 p-4 border-2 border-[#0a3442] rounded-2xl">
+                    <p class="text-[10px] font-bold text-slate-400">SUCCESS RATE</p>
+                    <p class="text-2xl font-bold text-[var(--retro-blue)]" id="final-rate">0%</p>
+                </div>
+            </div>
+
+            <div class="bg-slate-50 border-2 border-[#0a3442] rounded-2xl p-4 mb-6 text-left h-48 overflow-y-auto" id="feedback-log">
+                <p class="text-xs font-bold text-[var(--retro-blue)] mb-2 border-b border-dashed border-slate-300 pb-1">POST-ACTION DEBRIEF (LOG)</p>
+                <!-- Log injected here -->
+            </div>
+
+            <p id="reinforcement-msg" class="text-sm md:text-base mb-8 leading-relaxed font-bold animate-pulse">
+                Message
+            </p>
+
+            <button onclick="location.reload()" class="pixel-btn px-8 py-4 text-sm text-lg">MAIN LAGI</button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- DATA BASS (10 Scenarios using S-T-A Theory) ---
+        const scenarios = [
+            {
+                title: "Kasus 1: Sales vs Ops (Pencairan)",
+                enemy: "Orang operasional selalu bikin lambat proses pencairan klien VIP saya! Kalian sengaja ya mau jegal target saya?!",
+                avatar: "🤬",
+                phases: [
+                    {   type: "S (Share Facts)", 
+                        options: [
+                            { text: "Kamu jangan asal nuduh operasional lambat, mereka juga sibuk.", isCorrect: false, feedback: "Menghakimi. Memancing ego lawan bicara." },
+                            { text: "Saya cek di sistem, ada 3 aplikasi dari timmu yang tertunda 2 jam dari SLA.", isCorrect: true, feedback: "Bagus! Menyampaikan fakta objektif tanpa emosi." },
+                            { text: "Kalian orang sales yang selalu masukin data mepet waktu, kan?", isCorrect: false, feedback: "Menyerang balik. Memicu pertahanan diri (defensif)." }
+                        ]
+                    },
+                    {   type: "T (Tell Impact)",
+                        options: [
+                            { text: "Gara-gara kamu marah-marah, anak ops jadi males kerja tau.", isCorrect: false, feedback: "Menyalahkan individu. Ego departemental meningkat." },
+                            { text: "Bikin pusing saya aja komplain terus tiap hari.", isCorrect: false, feedback: "Berfokus pada perasaan pribadi negatif (keluhan)." },
+                            { text: "Keterlambatan ini berisiko membuat nasabah VIP kecewa dan target cabang meleset.", isCorrect: true, feedback: "Tepat! Menunjukkan dampak pada tujuan bersama perusahaan." }
+                        ]
+                    },
+                    {   type: "A (Ask for Action)",
+                        options: [
+                            { text: "Bisa kita duduk bareng cek dokumennya, mana yang kurang agar bisa diprioritaskan?", isCorrect: true, feedback: "Excellent! Mengubah ketegangan menjadi ajakan kolaborasi penyelesaian masalah." },
+                            { text: "Ya udah kamu tunggu aja, nanti juga dicairkan kalau udah gilirannya.", isCorrect: false, feedback: "Mengabaikan masalah. Tidak ada solusi." },
+                            { text: "Harusnya kamu introspeksi dan briefing timmu biar datanya lengkap.", isCorrect: false, feedback: "Menceramahi. Akan ditolak oleh ego." }
+                        ]
+                    }
+                ],
+                actionPlan: "Review bersama SOP penyerahan dokumen antara SPV Sales dan SPV Ops pukul 15.00 WIB."
+            },
+            {
+                title: "Kasus 2: CS vs Teller (Lempar Tanggung Jawab)",
+                enemy: "Teller tuh gimana sih?! Nasabah cuma mau ganti buku aja dilempar ke CS padahal antrian saya lagi panjang banget!",
+                avatar: "😤",
+                phases: [
+                    {
+                        type: "S", options: [
+                            { text: "Teller sudah kerja sesuai prosedur, kamu yang kurang sabar.", isCorrect: false, feedback: "Membela satu pihak tanpa data." },
+                            { text: "Saya perhatikan pagi ini ada 4 nasabah ganti buku yang dialihkan ke CS.", isCorrect: true, feedback: "Fakta spesifik tanpa menyalahkan." },
+                            { text: "Kamu nggak usah teriak-teriak di depan banking hall.", isCorrect: false, feedback: "Mempermalukan bawahan/kolega." }
+                        ]
+                    },
+                    {
+                        type: "T", options: [
+                            { text: "Dampaknya, antrian CS menumpuk dan nasabah jadi menunggu lebih dari 30 menit.", isCorrect: true, feedback: "Fokus pada dampak pelayanan." },
+                            { text: "Kamu bikin reputasi CS jadi jelek karena wajahmu cemberut.", isCorrect: false, feedback: "Serangan personal." },
+                            { text: "Bikin pusing kepala cabang kalau antrian membludak.", isCorrect: false, feedback: "Alasan yang kurang empatik." }
+                        ]
+                    },
+                    {
+                        type: "A", options: [
+                            { text: "Pokoknya kamu kerjain aja, itu kan tugas CS juga.", isCorrect: false, feedback: "Otoriter, tidak menyelesaikan akar masalah." },
+                            { text: "Coba kamu tegur tellernya langsung biar mereka ngerti.", isCorrect: false, feedback: "Mengadu domba." },
+                            { text: "Bagaimana kalau kita diskusikan batasan transaksi dengan Head Teller siang ini?", isCorrect: true, feedback: "Mengajak ke meja diskusi yang kolaboratif." }
+                        ]
+                    }
+                ],
+                actionPlan: "Rapat koordinasi CS & Teller siang ini untuk penegasan ulang batas nominal & jenis transaksi di counter."
+            },
+            {
+                title: "Kasus 3: Marketing vs IT (Sistem Error)",
+                enemy: "Sistem promo eror terus! Orang IT ngapain aja sih? Percuma saya capek-capek cari nasabah kalau sistem gagal!",
+                avatar: "🤯",
+                phases: [
+                    { type: "S", options: [
+                        { text: "Orang IT lagi sibuk perbaikan, jangan ganggu.", isCorrect: false, feedback: "Dismissive (mengabaikan)." },
+                        { text: "Laporan masuk menunjukkan kode error 504 terjadi 15 kali pagi ini di aplikasi promo.", isCorrect: true, feedback: "Data spesifik, menetralkan emosi." },
+                        { text: "Kalian aja yang bikin promonya kerumitan.", isCorrect: false, feedback: "Menyalahkan (blaming)." }
+                    ]},
+                    { type: "T", options: [
+                        { text: "Akibatnya nasabah gagal klaim dan komplain di sosmed cabang kita meningkat.", isCorrect: true, feedback: "Dampak bisnis yang nyata." },
+                        { text: "Anak IT jadi stres dengerin kamu marah.", isCorrect: false, feedback: "Subjektif." },
+                        { text: "Gara-gara ini bonus kita terancam batal.", isCorrect: false, feedback: "Fokus pada uang/pribadi, bukan solusi operasional." }
+                    ]},
+                    { type: "A", options: [
+                        { text: "Tolong IT benerin sekarang juga, saya nggak mau tau!", isCorrect: false, feedback: "Memerintah secara arogan." },
+                        { text: "Mending promonya kita hentikan sementara aja.", isCorrect: false, feedback: "Reaktif tanpa diskusi." },
+                        { text: "Bisakah tim IT dan Marketing membuat alur mitigasi sementara saat error terjadi?", isCorrect: true, feedback: "Fokus pada Action Plan kolaboratif." }
+                    ]}
+                ],
+                actionPlan: "Pembuatan broadcast message permohonan maaf dan alur manual sementara untuk nasabah promo."
+            },
+            {
+                title: "Kasus 4: Security vs SPV (Aturan Baru)",
+                enemy: "Pak/Bu, nasabah marah-marah ke saya gara-gara aturan VIP parking yang baru! Saya cuma jalanin tugas, tapi saya yang dimaki!",
+                avatar: "🥵",
+                phases: [
+                    { type: "S", options: [
+                        { text: "Saya lihat ada 3 nasabah reguler yang komplain saat Anda arahkan pindah parkir.", isCorrect: true, feedback: "Observasi fakta lapangan." },
+                        { text: "Kamu harusnya lebih ramah ngasih taunya, wajar nasabah marah.", isCorrect: false, feedback: "Menyalahkan korban (blaming)." },
+                        { text: "Udah, itu kan risiko pekerjaan Satpam.", isCorrect: false, feedback: "Sangat tidak empatik." }
+                    ]},
+                    { type: "T", options: [
+                        { text: "Nasabah jadi memandang pelayanan cabang kita buruk sejak dari area parkir.", isCorrect: true, feedback: "Dampak pelayanan menyeluruh." },
+                        { text: "Kalau begini kamu bisa saya laporkan ke vendor outsource.", isCorrect: false, feedback: "Mengancam." },
+                        { text: "Bikin saya repot harus turun tangan ke depan terus.", isCorrect: false, feedback: "Ego pribadi." }
+                    ]},
+                    { type: "A", options: [
+                        { text: "Gimana kalau kita usulkan ke manajemen untuk pasang papan informasi VIP yang lebih jelas?", isCorrect: true, feedback: "Mencari solusi infrastruktur bersama." },
+                        { text: "Ya udah besok bebaskan aja parkirnya.", isCorrect: false, feedback: "Melanggar aturan secara sepihak." },
+                        { text: "Coba kamu belajar sabar lagi hadapi nasabah.", isCorrect: false, feedback: "Menceramahi, bukan solusi teknis." }
+                    ]}
+                ],
+                actionPlan: "Pengajuan pengadaan signage khusus area parkir VIP ke bagian GA dan briefing cara penyampaian pesan."
+            },
+            {
+                title: "Kasus 5: Kredit vs Penagihan (Nasabah Lari)",
+                enemy: "Tim penagihan kalau nagih kasar banget! Nasabah kredit saya yang bagus jadi mau pindah bank gara-gara ditelepon membabi buta!",
+                avatar: "🤬",
+                phases: [
+                    { type: "S", options: [
+                        { text: "Nasabahmu emang nunggak kan? Wajar ditagih keras.", isCorrect: false, feedback: "Membela divisi lain secara membabi buta." },
+                        { text: "Tadi pagi ada 2 nasabah lancar yang komplain tentang nada bicara tim penagihan via telepon.", isCorrect: true, feedback: "Fokus pada keluhan aktual." },
+                        { text: "Tim penagihan emang preman gayanya, saya juga capek.", isCorrect: false, feedback: "Ikut mengeluh, tidak profesional." }
+                    ]},
+                    { type: "T", options: [
+                        { text: "Kondisi ini bikin portofolio kredit cabang kita menurun kalau mereka take-over.", isCorrect: true, feedback: "Dampak bisnis makro." },
+                        { text: "Bikin nama penagihan jadi jelek aja.", isCorrect: false, feedback: "Kurang berdampak luas." },
+                        { text: "Saya jadi susah kalau mau nagih KPI kamu.", isCorrect: false, feedback: "Ego atasan." }
+                    ]},
+                    { type: "A", options: [
+                        { text: "Bisa kita review bareng script (naskah) penagihan yang dipakai tim desk-call?", isCorrect: true, feedback: "Solusi pada proses (SOP)." },
+                        { text: "Marahin aja langsung anak penagihannya biar kapok.", isCorrect: false, feedback: "Provokatif." },
+                        { text: "Udah suruh nasabahnya maklum aja, namanya juga utang.", isCorrect: false, feedback: "Menghancurkan bisnis." }
+                    ]}
+                ],
+                actionPlan: "Sesi kalibrasi role-play (script) antara SPV Kredit dan tim Desk-Collection besok pagi."
+            },
+            {
+                title: "Kasus 6: Admin vs Sales (Data Incomplete)",
+                enemy: "Sales naruh data pengajuan selalu bolong-bolong! Saya capek balikin terus, SLA saya yang kena!",
+                avatar: "😠",
+                phases: [
+                    { type: "S", options: [
+                        { text: "Hari ini ada 10 berkas yang dikembalikan karena kurang ttd nasabah.", isCorrect: true, feedback: "Fakta kuantitatif." },
+                        { text: "Sales emang kerjanya cuma nyari orang, nggak rapi.", isCorrect: false, feedback: "Stereotyping." },
+                        { text: "Kamu teliti dikit napa bantuin mereka.", isCorrect: false, feedback: "Menyalahkan pelapor." }
+                    ]},
+                    { type: "T", options: [
+                        { text: "Akibatnya approval kredit melambat dan cabang rugi waktu.", isCorrect: true, feedback: "Dampak proses end-to-end." },
+                        { text: "Bikin saya males tanda tangan.", isCorrect: false, feedback: "Egois." },
+                        { text: "Kalian berdua bikin suasana kantor nggak enak.", isCorrect: false, feedback: "Menghakimi emosi." }
+                    ]},
+                    { type: "A", options: [
+                        { text: "Mari kita buat checklist mandatory wajib sebelum berkas diserahkan ke admin.", isCorrect: true, feedback: "Solusi sistemis." },
+                        { text: "Tolak aja terus sampai mereka bosen.", isCorrect: false, feedback: "Menghambat kerja." },
+                        { text: "Yaudah kamu isiin aja yang kurang.", isCorrect: false, feedback: "Menumpuk beban tidak adil." }
+                    ]}
+                ], actionPlan: "Implementasi form checklist verifikasi 1 pintu (Document Checker)."
+            },
+            {
+                title: "Kasus 7: Branch Mgr vs SPV (Target Hancur)",
+                enemy: "Target bulan ini hancur lebur! Kalian di cabang kerjanya ngapain aja?! Nggak ada inovasi!",
+                avatar: "👹",
+                phases: [
+                    { type: "S", options: [
+                        { text: "Bapak/Ibu jangan asal marah, kita udah lembur.", isCorrect: false, feedback: "Defensif thd atasan." },
+                        { text: "Betul Pak/Bu, pencapaian kita baru 40% padahal sudah minggu ketiga.", isCorrect: true, feedback: "Mengakui fakta data." },
+                        { text: "Kondisi ekonomi lagi susah Pak.", isCorrect: false, feedback: "Mencari alasan." }
+                    ]},
+                    { type: "T", options: [
+                        { text: "Hal ini memang berdampak pada rapor cabang kita di regional.", isCorrect: true, feedback: "Menerima impact (dampak)." },
+                        { text: "Bikin tim saya makin down kalau dimarahi begini.", isCorrect: false, feedback: "Playing victim." },
+                        { text: "Bapak/Ibu jadi kelihatan jelek di mata direksi.", isCorrect: false, feedback: "Tidak sopan." }
+                    ]},
+                    { type: "A", options: [
+                        { text: "Izinkan saya presentasikan 3 pipeline besar yang bisa dieksekusi minggu ini.", isCorrect: true, feedback: "Proaktif menawarkan action." },
+                        { text: "Bapak ada saran kita harus gimana?", isCorrect: false, feedback: "Melempar balik bola." },
+                        { text: "Kita pasrah aja Pak untuk bulan ini.", isCorrect: false, feedback: "Menyerah." }
+                    ]}
+                ], actionPlan: "Presentasi pipeline darurat dan eksekusi blitz-marketing minggu ke-4."
+            },
+            {
+                title: "Kasus 8: CS vs Backoffice (Laporan Mepet)",
+                enemy: "Backoffice selalu minta rekap laporan harian jam 16.50! Kita kan mau closing dan pulang!",
+                avatar: "😩",
+                phases: [
+                    { type: "S", options: [
+                        { text: "Tiga hari terakhir BO minta data h-10 menit sebelum jam operasional tutup.", isCorrect: true, feedback: "Fakta presisi waktu." },
+                        { text: "BO emang nggak punya perasaan.", isCorrect: false, feedback: "Toxic." },
+                        { text: "Kalian yang kerjanya lambat kali.", isCorrect: false, feedback: "Menyalahkan CS." }
+                    ]},
+                    { type: "T", options: [
+                        { text: "Efeknya CS jadi sering selisih kas karena terburu-buru closing.", isCorrect: true, feedback: "Dampak ke risiko operasional." },
+                        { text: "Uang lembur kalian jadi bengkak.", isCorrect: false, feedback: "Kurang tepat." },
+                        { text: "Saya pusing dengar keluhan kalian berdua.", isCorrect: false, feedback: "Egoistis." }
+                    ]},
+                    { type: "A", options: [
+                        { text: "Bagaimana kalau kita sepakati cut-off time permintaan laporan BO maksimal jam 15.00?", isCorrect: true, feedback: "Membuat SLA baru." },
+                        { text: "Tolak aja permintaan mereka besok.", isCorrect: false, feedback: "Sabotase." },
+                        { text: "Sabar aja, sebentar lagi juga mutasi.", isCorrect: false, feedback: "Mengabaikan." }
+                    ]}
+                ], actionPlan: "Penerbitan memo internal terkait Cut-off Time rekonsiliasi harian."
+            },
+            {
+                title: "Kasus 9: Teller vs Teller (Selisih Kas)",
+                enemy: "Gara-gara kamu over-handle shift siang, kas saya selisih 500 ribu! Kamu nggak teliti pas serah terima!",
+                avatar: "😤",
+                phases: [
+                    { type: "S", options: [
+                        { text: "Kamu jangan nuduh, buktiin dulu.", isCorrect: false, feedback: "Konfrontatif." },
+                        { text: "Ada selisih Rp500.000 pada jurnal transaksi pergantian shift jam 12.00 siang tadi.", isCorrect: true, feedback: "Fokus pada angka dan log." },
+                        { text: "Kalian berdua emang pada ceroboh.", isCorrect: false, feedback: "Menghakimi dua belah pihak." }
+                    ]},
+                    { type: "T", options: [
+                        { text: "Selisih ini membuat laporan neraca cabang tidak balance dan kena teguran audit.", isCorrect: true, feedback: "Dampak kepatuhan/audit." },
+                        { text: "Kalian bakal saya potong gaji.", isCorrect: false, feedback: "Mengancam." },
+                        { text: "Bikin malu cabang aja.", isCorrect: false, feedback: "Personal attack." }
+                    ]},
+                    { type: "A", options: [
+                        { text: "Mari kita buka rekaman CCTV dan bongkar jurnal transaksi satu per satu sekarang.", isCorrect: true, feedback: "Langkah investigasi objektif." },
+                        { text: "Ganti rugi aja berdua bagi rata.", isCorrect: false, feedback: "Tidak menyelesaikan akar masalah/prosedur." },
+                        { text: "Ya udah ikhlasin aja.", isCorrect: false, feedback: "Melanggar prosedur bank." }
+                    ]}
+                ], actionPlan: "Investigasi silang jurnal dan CCTV, serta refreshment SOP Serah Terima Kas."
+            },
+            {
+                title: "Kasus 10: Sales vs Sales (Sikut Prospek)",
+                enemy: "Dia nyuri database prospek nasabah VIP saya! Kemarin saya yang telepon, hari ini dia yang closing!",
+                avatar: "🤬",
+                phases: [
+                    { type: "S", options: [
+                        { text: "Saya melihat data Nasabah X dihubungi oleh A kemarin, lalu di-closing oleh B hari ini.", isCorrect: true, feedback: "Memaparkan timeline kejadian." },
+                        { text: "Kamu jangan serakah dong, rezeki udah ada yang ngatur.", isCorrect: false, feedback: "Menceramahi hal non-teknis." },
+                        { text: "Kalian berdua emang tukang sikut.", isCorrect: false, feedback: "Toxic leadership." }
+                    ]},
+                    { type: "T", options: [
+                        { text: "Konflik rebutan nasabah ini merusak kekompakan tim dan bikin nasabah bingung.", isCorrect: true, feedback: "Dampak internal & eksternal." },
+                        { text: "Bikin saya pusing ngurusin anak buah berantem.", isCorrect: false, feedback: "Keluhan pribadi." },
+                        { text: "Nanti komisi kalian saya tahan dua-duanya.", isCorrect: false, feedback: "Otoriter tanpa edukasi." }
+                    ]},
+                    { type: "A", options: [
+                        { text: "Ayo kita perjelas kembali SOP tagging/penguncian database prospek di CRM agar adil.", isCorrect: true, feedback: "Perbaikan sistem (Systemic Solution)." },
+                        { text: "Udah bagi dua aja komisinya biar diam.", isCorrect: false, feedback: "Solusi instan, tidak cegah masalah berulang." },
+                        { text: "Yang penting cabang capai target, terserah siapa yang closing.", isCorrect: false, feedback: "Membiarkan budaya kanibal antar tim." }
+                    ]}
+                ], actionPlan: "Pembaruan aturan 'Rules of Engagement' dan SOP Tagging Nasabah di sistem CRM."
+            }
+        ];
+
+        // --- GAME STATE ---
+        let state = {
+            name: "",
+            nik: "",
+            currentScenarioIndex: 0,
+            currentPhase: 0, 
+            tension: 50, 
+            score: 0,
+            progress: 0,
+            badges: 0,
+            logs: []
+        };
+
+        // --- AUDIO ENGINE (Web Audio API) ---
+        let audioCtx;
+        let isMuted = false;
+        let bgmInterval;
+
+        function initAudio() {
+            if (audioCtx) return;
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            audioCtx = new AudioContext();
+            startBGM();
+        }
+
+        // Procedural Tense BGM (Arpeggiator)
+        function startBGM() {
+            if(!audioCtx || isMuted) return;
+            stopBGM();
+            
+            const notes = [220, 261.63, 329.63, 261.63]; 
+            let step = 0;
+            
+            bgmInterval = setInterval(() => {
+                if(audioCtx.state === 'suspended') audioCtx.resume();
+                if(isMuted) return;
+
+                let speedMultiplier = 1 + (state.tension / 100); 
+                
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(notes[step % notes.length], audioCtx.currentTime);
+                
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'lowpass';
+                filter.frequency.value = 400 + (state.tension * 4); 
+
+                gain.gain.setValueAtTime(1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.12 / speedMultiplier);
+
+                osc.connect(filter);
+                filter.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.12 / speedMultiplier);
+
+                step++;
+            }, Math.max(120, 320 - (state.tension * 2))); 
+        }
+
+        function stopBGM() {
+            if(bgmInterval) clearInterval(bgmInterval);
+        }
+
+        function playSFX(type) {
+            if(!audioCtx || isMuted) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+            
+            if (type === 'select') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, now);
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+                osc.start(now);
+                osc.stop(now + 0.1);
+            } else if (type === 'correct') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(440, now);
+                osc.frequency.exponentialRampToValueAtTime(880, now + 0.2);
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.linearRampToValueAtTime(0, now + 0.3);
+                osc.start(now);
+                osc.stop(now + 0.3);
+            } else if (type === 'wrong') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(150, now);
+                osc.frequency.linearRampToValueAtTime(100, now + 0.3);
+                gain.gain.setValueAtTime(0.4, now);
+                gain.gain.linearRampToValueAtTime(0, now + 0.3);
+                osc.start(now);
+                osc.stop(now + 0.3);
+            } else if (type === 'explode') {
+                const bufferSize = audioCtx.sampleRate * 1; 
+                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) { data[i] = Math.random() * 2 - 1; }
+                const noise = audioCtx.createBufferSource();
+                noise.buffer = buffer;
+                const noiseFilter = audioCtx.createBiquadFilter();
+                noiseFilter.type = 'lowpass';
+                noiseFilter.frequency.setValueAtTime(1000, now);
+                noiseFilter.frequency.exponentialRampToValueAtTime(100, now + 1);
+                noise.connect(noiseFilter);
+                noiseFilter.connect(gain);
+                gain.gain.setValueAtTime(0.5, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 1);
+                noise.start(now);
+            }
+        }
+
+        // Toggle Mute
+        document.getElementById('btn-mute').addEventListener('click', (e) => {
+            isMuted = !isMuted;
+            document.getElementById('speaker-icon').innerText = isMuted ? '🔇' : '🔊';
+            if(isMuted) stopBGM();
+            else startBGM();
+        });
+
+
+        // --- UI & LOGIC FUNCTIONS ---
+        function switchScreen(hideId, showId) {
+            document.getElementById(hideId).classList.add('hidden');
+            document.getElementById(showId).classList.remove('hidden');
+            window.scrollTo(0,0);
+        }
+
+        // Gateway Login
+        document.getElementById('btn-login').addEventListener('click', () => {
+            initAudio(); // <--- BARIS INI YANG DITAMBAHKAN
+            playSFX('select');
+            const name = document.getElementById('input-nama').value.trim();
+            const nik = document.getElementById('input-nik').value;
+            const err = document.getElementById('nik-error');
+
+            if (name === "") return alert("Masukkan nama Anda!");
+            if (!/^\d{10}$/.test(nik)) {
+                err.classList.remove('hidden');
+                return;
+            }
+            err.classList.add('hidden');
+            
+            state.name = name;
+            state.nik = nik;
+            document.getElementById('hud-name').innerText = name.toUpperCase();
+            
+            switchScreen('screen-gateway', 'screen-briefing');
+        });
+
+        // Start Game
+        document.getElementById('btn-start-game').addEventListener('click', () => {
+            initAudio();
+            playSFX('select');
+            switchScreen('screen-briefing', 'screen-game');
+            loadScenario();
+        });
+
+        function updateHUD() {
+            document.getElementById('hud-score').innerText = state.score;
+            state.progress = Math.round((state.currentScenarioIndex / scenarios.length) * 100);
+            document.getElementById('hud-progress-bar').style.width = `${state.progress}%`;
+            document.getElementById('hud-progress-text').innerText = `${state.progress}%`;
+
+            // Tension Meter Update
+            const meter = document.getElementById('tension-fill');
+            const status = document.getElementById('tension-status');
+            meter.style.width = `${state.tension}%`;
+            
+            if(state.tension < 40) {
+                meter.style.background = 'var(--retro-green)';
+                status.innerText = "EGO STABIL (SAFE)";
+                status.style.color = "var(--retro-green)";
+            } else if (state.tension < 75) {
+                meter.style.background = 'var(--retro-yellow)';
+                status.innerText = "WARNING: TENSION RISING";
+                status.style.color = "var(--retro-yellow)";
+            } else {
+                meter.style.background = 'var(--retro-red)';
+                status.innerText = "CRITICAL: EGO DEFENSIVE";
+                status.style.color = "var(--retro-red)";
+            }
+
+            startBGM();
+        }
+
+        function awardBadge(type) {
+            playSFX('correct');
+            state.badges++;
+            const container = document.getElementById('badge-container');
+            const icons = ['🛡️', '⚔️', '🎖️', '🏆'];
+            container.innerHTML += `<span class="animate-bounce" title="Badge Achieved!">${icons[state.badges % icons.length]}</span>`;
+        }
+
+        let typingTimeout;
+        function typeWriter(text, elementId, speed = 25) {
+            const el = document.getElementById(elementId);
+            el.innerHTML = '';
+            let i = 0;
+            clearTimeout(typingTimeout);
+            function type() {
+                if (i < text.length) {
+                    el.innerHTML += text.charAt(i);
+                    i++;
+                    typingTimeout = setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+
+        function loadScenario() {
+            if (state.currentScenarioIndex >= scenarios.length) {
+                endGame();
+                return;
+            }
+
+            const sc = scenarios[state.currentScenarioIndex];
+            state.currentPhase = 0;
+            state.tension = 50; 
+            updateHUD();
+
+            document.getElementById('scenario-title').innerText = sc.title;
+            document.getElementById('avatar').innerText = sc.avatar;
+            typeWriter(`"${sc.enemy}"`, 'enemy-dialogue');
+
+            // Reset S-T-A text display
+            document.getElementById('part-s').innerText = "S: ...";
+            document.getElementById('part-t').innerText = "T: ...";
+            document.getElementById('part-a').innerText = "A: ...";
+            document.getElementById('part-s').className = "opacity-50";
+            document.getElementById('part-t').className = "opacity-50";
+            document.getElementById('part-a').className = "opacity-50 block mt-1";
+
+            renderPhase();
+        }
+
+        function renderPhase() {
+            const sc = scenarios[state.currentScenarioIndex];
+            const phaseData = sc.phases[state.currentPhase];
+            
+            document.getElementById('current-phase-indicator').innerText = `FASE: ${phaseData.type}`;
+            
+            const container = document.getElementById('choices-container');
+            container.innerHTML = '';
+
+            const shuffledOptions = [...phaseData.options].sort(() => Math.random() - 0.5);
+
+            shuffledOptions.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'choice-btn w-full p-3 text-xs md:text-sm';
+                btn.innerText = opt.text;
+                btn.onclick = () => handleChoice(opt);
+                container.appendChild(btn);
+            });
+        }
+
+        function handleChoice(option) {
+            const sc = scenarios[state.currentScenarioIndex];
+            const phaseLabels = ['part-s', 'part-t', 'part-a'];
+            
+            const textSpan = document.getElementById(phaseLabels[state.currentPhase]);
+            textSpan.innerText = `${sc.phases[state.currentPhase].type.charAt(0)}: "${option.text}"`;
+            textSpan.classList.remove('opacity-50');
+            textSpan.classList.add('text-[#0a3442]', 'font-bold');
+
+            if (option.isCorrect) {
+                playSFX('correct');
+                state.tension = Math.max(10, state.tension - 20); 
+                state.score += 100;
+                
+                if (state.currentPhase === 2) {
+                    state.score += 300; 
+                    updateHUD();
+                    showFeedback(true, "RESOLUSI BERHASIL", option.feedback, sc.actionPlan);
+                } else {
+                    state.currentPhase++;
+                    updateHUD();
+                    renderPhase();
+                }
+            } else {
+                playSFX('wrong');
+                state.tension += 30; 
+                document.getElementById('game-arena').classList.add('shake-active');
+                setTimeout(() => document.getElementById('game-arena').classList.remove('shake-active'), 500);
+                
+                updateHUD();
+                
+                if (state.tension >= 100) {
+                    playSFX('explode');
+                    showFeedback(false, "DEFENSIVE TRAP ACTIVATED", option.feedback + "<br><br><b>Lawan bicara meledak emosinya dan meninggalkan ruangan. Anda harus mengulang level ini.</b>");
+                } else {
+                    showFeedback(false, "RESPONS BERBAHAYA", option.feedback + "<br>Tension meter naik! Pilih kata dengan lebih hati-hati.");
+                }
+            }
+        }
+
+        function showFeedback(isSuccess, title, desc, actionPlanText = null) {
+            const modal = document.getElementById('modal-feedback');
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-title').className = `text-xl md:text-2xl font-black mb-4 ${isSuccess ? 'text-[var(--retro-green)]' : 'text-[var(--retro-red)]'}`;
+            document.getElementById('modal-icon').innerText = isSuccess ? '🤝' : '🔥';
+            document.getElementById('modal-desc').innerHTML = desc;
+
+            const docBox = document.getElementById('action-plan-doc');
+            if (actionPlanText) {
+                docBox.classList.remove('hidden');
+                document.getElementById('action-plan-text').innerText = actionPlanText;
+            } else {
+                docBox.classList.add('hidden');
+            }
+
+            modal.classList.remove('hidden');
+
+            const btnNext = document.getElementById('btn-modal-next');
+            const newBtn = btnNext.cloneNode(true);
+            btnNext.parentNode.replaceChild(newBtn, btnNext);
+            
+            newBtn.addEventListener('click', () => {
+                playSFX('select');
+                modal.classList.add('hidden');
+                
+                if (isSuccess && actionPlanText) {
+                    state.logs.push(`✅ Kasus ${state.currentScenarioIndex + 1}: Action Plan Terbentuk (${actionPlanText})`);
+                    
+                    if (state.currentScenarioIndex === 2) awardBadge(); 
+                    if (state.currentScenarioIndex === 5) awardBadge(); 
+                    if (state.currentScenarioIndex === 9) awardBadge(); 
+
+                    state.currentScenarioIndex++;
+                    loadScenario();
+                } else if (state.tension >= 100) {
+                    state.logs.push(`❌ Kasus ${state.currentScenarioIndex + 1}: Gagal (Terjebak Ego/Defensif)`);
+                    loadScenario(); 
+                } else {
+                    const textSpan = document.getElementById(['part-s', 'part-t', 'part-a'][state.currentPhase]);
+                    textSpan.innerText = `${scenarios[state.currentScenarioIndex].phases[state.currentPhase].type.charAt(0)}: ...`;
+                    textSpan.classList.add('opacity-50');
+                    textSpan.classList.remove('text-[#0a3442]', 'font-bold');
+                }
+            });
+        }
+
+        function endGame() {
+            stopBGM();
+            switchScreen('screen-game', 'screen-debrief');
+            
+            document.getElementById('debrief-name').innerText = `SUPERVISOR: ${state.name} | NIK: ${state.nik}`;
+            document.getElementById('final-score').innerText = state.score;
+            
+            const maxScore = 10 * ((100 * 3) + 300); 
+            const rate = Math.round((state.score / maxScore) * 100);
+            document.getElementById('final-rate').innerText = `${rate}%`;
+
+            const logBox = document.getElementById('feedback-log');
+            state.logs.forEach(log => {
+                logBox.innerHTML += `<p class="text-xs font-semibold mb-2 ${log.startsWith('✅') ? 'text-teal-600' : 'text-red-600'}">${log}</p>`;
+            });
+
+            const msgEl = document.getElementById('reinforcement-msg');
+            if (rate > 80) {
+                msgEl.innerText = "LUAR BIASA! Anda berhasil memadamkan ego departemental dan menciptakan lingkungan kolaboratif. Anda layak menjadi pemimpin masa depan!";
+                msgEl.className = "text-sm md:text-base mb-8 leading-relaxed font-bold text-teal-600 animate-pulse";
+                playSFX('correct'); setTimeout(()=>playSFX('correct'), 300);
+            } else if (rate > 50) {
+                msgEl.innerText = "CUKUP BAIK. Beberapa konflik berhasil diatasi, namun terkadang Anda masih terbawa emosi atau kurang spesifik. Terus berlatih gunakan S-T-A!";
+                msgEl.className = "text-sm md:text-base mb-8 leading-relaxed font-bold text-yellow-600 animate-pulse";
+            } else {
+                msgEl.innerText = "CRITICAL FAILURE. Ego departemental masih menguasai komunikasi Anda. Banyak bawahan dan kolega yang merasa diserang. Pelajari ulang modul Nonviolent Communication.";
+                msgEl.className = "text-sm md:text-base mb-8 leading-relaxed font-bold text-red-600 animate-pulse";
+            }
+        }
+    </script>
+</body>
+</html>
