@@ -209,7 +209,7 @@
             <h2 class="text-xl md:text-2xl subtitle-styled mb-4 border-b-2 border-dashed border-[#0a3442]/30 pb-2">MISSION BRIEFING</h2>
             
             <div class="space-y-4 text-xs md:text-sm leading-relaxed text-[#0a3442]">
-                <p class="text-[var(--retro-red)] font-bold text-sm">HOOK (WHY):</p>
+                <p class="text-[var(--retro-red)] font-bold text-sm">(WHY):</p>
                 <p class="font-medium">Setiap hari, konflik antar departemen membunuh produktivitas. Ego sektoral adalah musuh terbesar kita. Jika Anda gagal meredamnya, cabang ini hancur.</p>
                 
                 <p class="text-[var(--retro-blue)] font-bold mt-6 text-sm">OBJECTIVE:</p>
@@ -351,32 +351,32 @@
         const scenarios = [
             {
                 title: "Kasus 1: Sales vs Ops (Pencairan)",
-                enemy: "Orang operasional selalu bikin lambat proses pencairan klien VIP saya! Kalian sengaja ya mau jegal target saya?!",
+                enemy: "Orang operasional selalu bikin lambat proses laporan! Kalian sengaja ya mau jegal target saya?!",
                 avatar: "🤬",
                 phases: [
                     {   type: "S (Share Facts)", 
                         options: [
                             { text: "Kamu jangan asal nuduh operasional lambat, mereka juga sibuk.", isCorrect: false, feedback: "Menghakimi. Memancing ego lawan bicara." },
-                            { text: "Saya cek di sistem, ada 3 aplikasi dari timmu yang tertunda 2 jam dari SLA.", isCorrect: true, feedback: "Bagus! Menyampaikan fakta objektif tanpa emosi." },
+                            { text: "Saya cek di sistem, ada 3 laporan dari timmu yang tertunda 2 jam dari deadline.", isCorrect: true, feedback: "Bagus! Menyampaikan fakta objektif tanpa emosi." },
                             { text: "Kalian orang sales yang selalu masukin data mepet waktu, kan?", isCorrect: false, feedback: "Menyerang balik. Memicu pertahanan diri (defensif)." }
                         ]
                     },
                     {   type: "T (Tell Impact)",
                         options: [
-                            { text: "Gara-gara kamu marah-marah, anak ops jadi males kerja tau.", isCorrect: false, feedback: "Menyalahkan individu. Ego departemental meningkat." },
+                            { text: "Gara-gara kamu marah-marah, anak opr jadi males kerja tau.", isCorrect: false, feedback: "Menyalahkan individu. Ego departemental meningkat." },
                             { text: "Bikin pusing saya aja komplain terus tiap hari.", isCorrect: false, feedback: "Berfokus pada perasaan pribadi negatif (keluhan)." },
-                            { text: "Keterlambatan ini berisiko membuat nasabah VIP kecewa dan target cabang meleset.", isCorrect: true, feedback: "Tepat! Menunjukkan dampak pada tujuan bersama perusahaan." }
+                            { text: "Keterlambatan ini berisiko membuat target cabang meleset.", isCorrect: true, feedback: "Tepat! Menunjukkan dampak pada tujuan bersama perusahaan." }
                         ]
                     },
                     {   type: "A (Ask for Action)",
                         options: [
-                            { text: "Bisa kita duduk bareng cek dokumennya, mana yang kurang agar bisa diprioritaskan?", isCorrect: true, feedback: "Excellent! Mengubah ketegangan menjadi ajakan kolaborasi penyelesaian masalah." },
-                            { text: "Ya udah kamu tunggu aja, nanti juga dicairkan kalau udah gilirannya.", isCorrect: false, feedback: "Mengabaikan masalah. Tidak ada solusi." },
+                            { text: "Bisa kita duduk bareng cek dokumennya, mana yang kurang agar bisa diselesaikan?", isCorrect: true, feedback: "Excellent! Mengubah ketegangan menjadi ajakan kolaborasi penyelesaian masalah." },
+                            { text: "Ya udah kamu tunggu aja, nanti juga selesai.", isCorrect: false, feedback: "Mengabaikan masalah. Tidak ada solusi." },
                             { text: "Harusnya kamu introspeksi dan briefing timmu biar datanya lengkap.", isCorrect: false, feedback: "Menceramahi. Akan ditolak oleh ego." }
                         ]
                     }
                 ],
-                actionPlan: "Review bersama SOP penyerahan dokumen antara SPV Sales dan SPV Ops pukul 15.00 WIB."
+                actionPlan: "Review bersama cari tahu dimana kendalanya."
             },
             {
                 title: "Kasus 2: CS vs Teller (Lempar Tanggung Jawab)",
@@ -637,8 +637,8 @@
                 filter.type = 'lowpass';
                 filter.frequency.value = 400 + (state.tension * 4); 
 
-                gain.gain.setValueAtTime(1, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.12 / speedMultiplier);
+                gain.gain.setValueAtTime(3.0, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(1.0, audioCtx.currentTime + 0.12 / speedMultiplier);
 
                 osc.connect(filter);
                 filter.connect(gain);
