@@ -350,7 +350,7 @@
         // --- DATA BASS (10 Scenarios using S-T-A Theory) ---
         const scenarios = [
             {
-                title: "Kasus 1: Sales vs Ops (Pencairan)",
+                title: "Kasus 1: Sales vs Ops (Pencairan).",
                 enemy: "Orang operasional selalu bikin lambat proses laporan! Kalian sengaja ya mau jegal target saya?!",
                 avatar: "🤬",
                 phases: [
@@ -379,37 +379,37 @@
                 actionPlan: "Review bersama cari tahu dimana kendalanya."
             },
             {
-                title: "Kasus 2: CS vs Teller (Lempar Tanggung Jawab)",
-                enemy: "Teller tuh gimana sih?! Nasabah cuma mau ganti buku aja dilempar ke CS padahal antrian saya lagi panjang banget!",
+                title: "Kasus 2: Lupa Memberikan Struk.",
+                enemy: "Aduh, pelanggannya tadi buru-buru banget Pak/Bu, lagian mereka juga nggak minta struknya. Jadi ya saya biarin aja di mesin.",
                 avatar: "😤",
                 phases: [
                     {
                         type: "S", options: [
-                            { text: "Teller sudah kerja sesuai prosedur, kamu yang kurang sabar.", isCorrect: false, feedback: "Membela satu pihak tanpa data." },
-                            { text: "Saya perhatikan pagi ini ada 4 nasabah ganti buku yang dialihkan ke CS.", isCorrect: true, feedback: "Fakta spesifik tanpa menyalahkan." },
-                            { text: "Kamu nggak usah teriak-teriak di depan banking hall.", isCorrect: false, feedback: "Mempermalukan bawahan/kolega." }
+                            { text: "Kamu ini gimana sih? SOP Kasir kan harus kasih struk, masa lupa terus!", isCorrect: false, feedback: "Menghakimi dan menggeneralisasi (menggunakan kata 'terus')." },
+                            { text: "Saya perhatikan pada tiga transaksi terakhir di kasirmu, struk belanja tidak diserahkan ke pelanggan.", isCorrect: true, feedback: "Bagus! Menyampaikan fakta objektif berdasarkan observasi jumlah transaksi." },
+                            { text: "Kamu sengaja ya nahan struknya buat mainin poin member?", isCorrect: false, feedback: "Menuduh tanpa bukti. Langsung memicu pertahanan diri (defensif)." }
                         ]
                     },
                     {
                         type: "T", options: [
-                            { text: "Dampaknya, antrian CS menumpuk dan nasabah jadi menunggu lebih dari 30 menit.", isCorrect: true, feedback: "Fokus pada dampak pelayanan." },
-                            { text: "Kamu bikin reputasi CS jadi jelek karena wajahmu cemberut.", isCorrect: false, feedback: "Serangan personal." },
-                            { text: "Bikin pusing kepala cabang kalau antrian membludak.", isCorrect: false, feedback: "Alasan yang kurang empatik." }
+                            { text: "Nanti kalau ketahuan auditor, saya yang kena semprot karena kelakuanmu.", isCorrect: false, feedback: "Fokus pada ego atasan, bukan dampak bisnis." },
+                            { text: "Toko kita bisa tutup kalau kasirnya ceroboh begini.", isCorrect: false, feedback: "Melebih-lebihkan (hyperbolic) sehingga terdengar tidak rasional." },
+                            { text: "Tidak memberikan struk dapat membuat pelanggan curiga ada kecurangan harga, dan itu menyalahi standar pelayanan kita.", isCorrect: true, feedback: "Tepat! Menjelaskan dampak pada persepsi (trust) pelanggan." }
                         ]
                     },
                     {
                         type: "A", options: [
-                            { text: "Pokoknya kamu kerjain aja, itu kan tugas CS juga.", isCorrect: false, feedback: "Otoriter, tidak menyelesaikan akar masalah." },
-                            { text: "Coba kamu tegur tellernya langsung biar mereka ngerti.", isCorrect: false, feedback: "Mengadu domba." },
-                            { text: "Bagaimana kalau kita diskusikan batasan transaksi dengan Head Teller siang ini?", isCorrect: true, feedback: "Mengajak ke meja diskusi yang kolaboratif." }
+                            { text: "Apa yang bisa kita lakukan agar pemberian struk otomatis menjadi kebiasaan tanpa harus diminta pelanggan?", isCorrect: true, feedback: "Excellent! Mengajak staf berpikir tentang perbaikan SOP/kebiasaannya sendiri." },
+                            { text: "Mulai sekarang pokoknya kalau lupa kasih struk, gajimu saya potong!", isCorrect: false, feedback: "Ancaman hukuman tidak menciptakan kesadaran proses." },
+                            { text: "Ya udah, besok-besok jangan lupa lagi ya. Diingat-ingat.", isCorrect: false, feedback: "Terlalu lemah, tidak ada komitmen atau rencana perbaikan (Action Plan)." }
                         ]
                     }
                 ],
-                actionPlan: "Rapat koordinasi CS & Teller siang ini untuk penegasan ulang batas nominal & jenis transaksi di counter."
+                actionPlan: "Berkomitmen menyertakan struk bersamaan dengan penyerahan uang kembalian dan ucapan terima kasih."
             },
             {
-                title: "Kasus 3: Marketing vs IT (Sistem Error)",
-                enemy: "Sistem promo eror terus! Orang IT ngapain aja sih? Percuma saya capek-capek cari nasabah kalau sistem gagal!",
+                title: "Kasus 3: Marketing vs IT (Sistem Error).",
+                enemy: "Sistem promo eror terus! Orang IT ngapain aja sih? Percuma saya capek-capek cari pelanggan kalau sistem gagal!",
                 avatar: "🤯",
                 phases: [
                     { type: "S", options: [
@@ -418,7 +418,7 @@
                         { text: "Kalian aja yang bikin promonya kerumitan.", isCorrect: false, feedback: "Menyalahkan (blaming)." }
                     ]},
                     { type: "T", options: [
-                        { text: "Akibatnya nasabah gagal klaim dan komplain di sosmed cabang kita meningkat.", isCorrect: true, feedback: "Dampak bisnis yang nyata." },
+                        { text: "Akibatnya pelanggan gagal klaim dan komplain di sosmed cabang kita meningkat.", isCorrect: true, feedback: "Dampak bisnis yang nyata." },
                         { text: "Anak IT jadi stres dengerin kamu marah.", isCorrect: false, feedback: "Subjektif." },
                         { text: "Gara-gara ini bonus kita terancam batal.", isCorrect: false, feedback: "Fokus pada uang/pribadi, bukan solusi operasional." }
                     ]},
@@ -428,39 +428,38 @@
                         { text: "Bisakah tim IT dan Marketing membuat alur mitigasi sementara saat error terjadi?", isCorrect: true, feedback: "Fokus pada Action Plan kolaboratif." }
                     ]}
                 ],
-                actionPlan: "Pembuatan broadcast message permohonan maaf dan alur manual sementara untuk nasabah promo."
+                actionPlan: "Pembuatan broadcast message permohonan maaf dan alur manual sementara untuk pelanggan promo."
             },
             {
-                title: "Kasus 4: Security vs SPV (Aturan Baru)",
-                enemy: "Pak/Bu, nasabah marah-marah ke saya gara-gara aturan VIP parking yang baru! Saya cuma jalanin tugas, tapi saya yang dimaki!",
+                title: "Kasus 4: Berdebat dengan pelanggan.",
+                enemy: "Pelanggannya aja yang ngeyel! Jelas-jelas bungkusnya sudah terbuka masih mau diretur. Ya saya tegaskan lah aturannya dengan keras!",
                 avatar: "🥵",
                 phases: [
                     { type: "S", options: [
-                        { text: "Saya lihat ada 3 nasabah reguler yang komplain saat Anda arahkan pindah parkir.", isCorrect: true, feedback: "Observasi fakta lapangan." },
-                        { text: "Kamu harusnya lebih ramah ngasih taunya, wajar nasabah marah.", isCorrect: false, feedback: "Menyalahkan korban (blaming)." },
-                        { text: "Udah, itu kan risiko pekerjaan Satpam.", isCorrect: false, feedback: "Sangat tidak empatik." }
+                        { text: "Saya perhatikan tadi nada suaramu cukup tinggi saat berhadapan dengan pelanggan yang ingin menukar baju di dekat pintu masuk.", isCorrect: true, feedback: "Fokus pada perilaku staf (nada suara) dan lokasi kejadian, tanpa menyalahkan." },
+                        { text: "Kamu nggak boleh bentak-bentak pelanggan, bagaimanapun juga pelanggan adalah raja!", isCorrect: false, feedback: "Klis dan tidak membahas perilaku spesifik." },
+                        { text: "Kamu bikin malu toko aja berantem sama pembeli di depan umum.", isCorrect: false, feedback: "Mempermalukan staf yang sedang merasa benar (defending the rule)." }
                     ]},
                     { type: "T", options: [
-                        { text: "Nasabah jadi memandang pelayanan cabang kita buruk sejak dari area parkir.", isCorrect: true, feedback: "Dampak pelayanan menyeluruh." },
-                        { text: "Kalau begini kamu bisa saya laporkan ke vendor outsource.", isCorrect: false, feedback: "Mengancam." },
-                        { text: "Bikin saya repot harus turun tangan ke depan terus.", isCorrect: false, feedback: "Ego pribadi." }
+                        { text: "Keributan tadi membuat pelanggan lain yang sedang memilih barang pergi karena merasa tidak nyaman dengan suasananya.", isCorrect: true, feedback: "Mengubah fokus staf dari 'siapa yang benar' ke 'dampak pada toko secara umum'." },
+                        { text: "Kamu merusak citra saya sebagai kepala toko yang ramah.", isCorrect: false, feedback: "Ego sentris." },
+                        { text: "Pelanggan itu pasti punya koneksi, kalau dia lapor pusat kita habis.", isCorrect: false, feedback: "Menakut-nakuti." }
                     ]},
                     { type: "A", options: [
-                        { text: "Gimana kalau kita usulkan ke manajemen untuk pasang papan informasi VIP yang lebih jelas?", isCorrect: true, feedback: "Mencari solusi infrastruktur bersama." },
-                        { text: "Ya udah besok bebaskan aja parkirnya.", isCorrect: false, feedback: "Melanggar aturan secara sepihak." },
-                        { text: "Coba kamu belajar sabar lagi hadapi nasabah.", isCorrect: false, feedback: "Menceramahi, bukan solusi teknis." }
-                    ]}
+                        { text: "Harusnya kamu panggil saya, jangan sok tahu nanganin sendiri.", isCorrect: false, feedback: "Mematikan inisiatif staf di masa depan." },
+                        { text: "Pokoknya kalau ada yang mau retur lagi, tolak saja mentah-mentah.", isCorrect: false, feedback: "Instruksi yang salah dan kaku." },
+                        { text: "Ke depannya, jika ada pelanggan yang bersikeras retur di luar aturan, bagaimana langkah terbaik menyelesaikannya tanpa berdebat di depan umum?", isCorrect: true, feedback: "Mengajak staf menemukan teknik deeskalasi konflik." }                    ]}
                 ],
-                actionPlan: "Pengajuan pengadaan signage khusus area parkir VIP ke bagian GA dan briefing cara penyampaian pesan."
+                actionPlan: "Menyepakati SOP Deeskalasi: Arahkan pelanggan yang komplain ke area layanan pelanggan/belakang, lalu panggil SPV."
             },
             {
-                title: "Kasus 5: Kredit vs Penagihan (Nasabah Lari)",
-                enemy: "Tim penagihan kalau nagih kasar banget! Nasabah kredit saya yang bagus jadi mau pindah bank gara-gara ditelepon membabi buta!",
+                title: "Kasus 5: Over-break / Disiplin Waktu.",
+                enemy: "Saya kan cuma telat balik istirahat 15 menit, antrian makannya tadi panjang. Lagian toko juga lagi sepi kok Pak/Bu.",
                 avatar: "🤬",
                 phases: [
                     { type: "S", options: [
-                        { text: "Nasabahmu emang nunggak kan? Wajar ditagih keras.", isCorrect: false, feedback: "Membela divisi lain secara membabi buta." },
-                        { text: "Tadi pagi ada 2 nasabah lancar yang komplain tentang nada bicara tim penagihan via telepon.", isCorrect: true, feedback: "Fokus pada keluhan aktual." },
+                        { text: "pelangganmu emang nunggak kan? Wajar ditagih keras.", isCorrect: false, feedback: "Membela divisi lain secara membabi buta." },
+                        { text: "Tadi pagi ada 2 pelanggan lancar yang komplain tentang nada bicara tim penagihan via telepon.", isCorrect: true, feedback: "Fokus pada keluhan aktual." },
                         { text: "Tim penagihan emang preman gayanya, saya juga capek.", isCorrect: false, feedback: "Ikut mengeluh, tidak profesional." }
                     ]},
                     { type: "T", options: [
@@ -471,35 +470,35 @@
                     { type: "A", options: [
                         { text: "Bisa kita review bareng script (naskah) penagihan yang dipakai tim desk-call?", isCorrect: true, feedback: "Solusi pada proses (SOP)." },
                         { text: "Marahin aja langsung anak penagihannya biar kapok.", isCorrect: false, feedback: "Provokatif." },
-                        { text: "Udah suruh nasabahnya maklum aja, namanya juga utang.", isCorrect: false, feedback: "Menghancurkan bisnis." }
+                        { text: "Udah suruh pelanggannya maklum aja, namanya juga utang.", isCorrect: false, feedback: "Menghancurkan bisnis." }
                     ]}
                 ],
-                actionPlan: "Sesi kalibrasi role-play (script) antara SPV Kredit dan tim Desk-Collection besok pagi."
+                actionPlan: "Pemberlakuan sistem 'Lapor Kembali' di grup WhatsApp internal 5 menit sebelum jam istirahat berakhir."
             },
             {
-                title: "Kasus 6: Admin vs Sales (Data Incomplete)",
-                enemy: "Sales naruh data pengajuan selalu bolong-bolong! Saya capek balikin terus, SLA saya yang kena!",
+                title: "Kasus 6: Makan Produk Reject.",
+                enemy: "Lah ini kan rotinya kemasannya udah sobek dari supplier, lagian besok juga expired. Sayang kan kalau dibuang mubazir?",
                 avatar: "😠",
                 phases: [
                     { type: "S", options: [
-                        { text: "Hari ini ada 10 berkas yang dikembalikan karena kurang ttd nasabah.", isCorrect: true, feedback: "Fakta kuantitatif." },
-                        { text: "Sales emang kerjanya cuma nyari orang, nggak rapi.", isCorrect: false, feedback: "Stereotyping." },
-                        { text: "Kamu teliti dikit napa bantuin mereka.", isCorrect: false, feedback: "Menyalahkan pelapor." }
+                        { text: "Saya melihat kamu mengonsumsi produk roti berstatus retur (BS) di ruang ganti karyawan tanpa mencatatnya di sistem.", isCorrect: true, feedback: "Fakta yang sangat jernih terkait tindakan dan status barang." },
+                        { text: "Kamu ketahuan nyolong barang toko ya?! Ini namanya pencurian!", isCorrect: false, feedback: "Meskipun teknisnya benar, menuduh mencuri di tahap awal akan membuat staf melawan secara ekstrem." },
+                        { text: "Orang susah ya kamu? Roti mau dibuang kok dimakan.", isCorrect: false, feedback: "Menghina martabat." }
                     ]},
                     { type: "T", options: [
-                        { text: "Akibatnya approval kredit melambat dan cabang rugi waktu.", isCorrect: true, feedback: "Dampak proses end-to-end." },
-                        { text: "Bikin saya males tanda tangan.", isCorrect: false, feedback: "Egois." },
-                        { text: "Kalian berdua bikin suasana kantor nggak enak.", isCorrect: false, feedback: "Menghakimi emosi." }
+                        { text: "Walaupun rusak, barang ini belum dihapus dari sistem. Tindakanmu akan membuat stok fisik toko minus dan merusak integritasmu sendiri.", isCorrect: true, feedback: "Menjelaskan dampak pada Inventory (Shrinkage) dan etika kerja." },
+                        { text: "Nanti kalau kamu sakit perut keracunan roti basi, BPJS toko yang nanggung.", isCorrect: false, feedback: "Sarkasme yang mengabaikan inti masalah (prosedur barang rusak)." },
+                        { text: "Pemilik toko bisa bangkrut kalau semua karyawan mentalnya begini.", isCorrect: false, feedback: "Hyperbolic." }
                     ]},
                     { type: "A", options: [
-                        { text: "Mari kita buat checklist mandatory wajib sebelum berkas diserahkan ke admin.", isCorrect: true, feedback: "Solusi sistemis." },
-                        { text: "Tolak aja terus sampai mereka bosen.", isCorrect: false, feedback: "Menghambat kerja." },
-                        { text: "Yaudah kamu isiin aja yang kurang.", isCorrect: false, feedback: "Menumpuk beban tidak adil." }
+                        { text: "Bayar rotinya sekarang juga, atau saya lapor HRD!", isCorrect: false, feedback: "Langsung melompat ke ancaman dan hukuman." },
+                        { text: "Udahlah jangan diulangi, habisin cepet rotinya terus kerja lagi.", isCorrect: false, feedback: "Pembiaran (pembenaran) atas pelanggaran etika." },
+                        { text: "Mari kita review SOP penanganan barang rusak (BS). Bagaimana prosedur yang seharusnya kita lakukan pada barang tersebut?", isCorrect: true, feedback: "Membawa kembali kesadaran staf kepada aturan (SOP) perusahaan." }
                     ]}
-                ], actionPlan: "Implementasi form checklist verifikasi 1 pintu (Document Checker)."
+                ], actionPlan: "Pemahaman ulang SOP Barang Rusak/Retur: Wajib dikumpulkan di keranjang merah dan dimusnahkan oleh SPV, tidak boleh dikonsumsi pribadi."
             },
             {
-                title: "Kasus 7: Branch Mgr vs SPV (Target Hancur)",
+                title: "Kasus 7: Branch Mgr vs SPV (Target Hancur).",
                 enemy: "Target bulan ini hancur lebur! Kalian di cabang kerjanya ngapain aja?! Nggak ada inovasi!",
                 avatar: "👹",
                 phases: [
@@ -521,70 +520,70 @@
                 ], actionPlan: "Presentasi pipeline darurat dan eksekusi blitz-marketing minggu ke-4."
             },
             {
-                title: "Kasus 8: CS vs Backoffice (Laporan Mepet)",
-                enemy: "Backoffice selalu minta rekap laporan harian jam 16.50! Kita kan mau closing dan pulang!",
+                title: "Kasus 8: Panik Mesin EDC Mati Total.",
+                enemy: "Mesin EDC-nya mati mendadak Pak! Saya panik karena 3 pelanggan di kasir teriak-teriak marah, makanya saya lari ke belakang cari Bapak!",
                 avatar: "😩",
                 phases: [
                     { type: "S", options: [
-                        { text: "Tiga hari terakhir BO minta data h-10 menit sebelum jam operasional tutup.", isCorrect: true, feedback: "Fakta presisi waktu." },
-                        { text: "BO emang nggak punya perasaan.", isCorrect: false, feedback: "Toxic." },
-                        { text: "Kalian yang kerjanya lambat kali.", isCorrect: false, feedback: "Menyalahkan CS." }
+                        { text: "Kamu ini mental tempe banget, ada masalah dikit kabur.", isCorrect: false, feedback: "Bullying." },
+                        { text: "Saat EDC offline tadi, kamu meninggalkan meja kasir yang terbuka dan penuh barang selama 5 menit tanpa memberi penjelasan ke pelanggan.", isCorrect: true, feedback: "Fokus pada *tindakan* meninggalkan meja kasir yang berbahaya." },
+                        { text: "Kenapa mesin EDC bisa mati?! Kamu tumpahin air ya?!", isCorrect: false, feedback: "Mencari kambing hitam atas masalah teknis." }
                     ]},
                     { type: "T", options: [
-                        { text: "Efeknya CS jadi sering selisih kas karena terburu-buru closing.", isCorrect: true, feedback: "Dampak ke risiko operasional." },
-                        { text: "Uang lembur kalian jadi bengkak.", isCorrect: false, feedback: "Kurang tepat." },
-                        { text: "Saya pusing dengar keluhan kalian berdua.", isCorrect: false, feedback: "Egoistis." }
+                        { text: "Meninggalkan kasir tanpa penjagaan berisiko tinggi terjadinya pencurian laci uang, dan pelanggan semakin emosi karena merasa diabaikan.", isCorrect: true, feedback: "Dampak keamanan (Security) dan kepuasan pelanggan." },
+                        { text: "Bikin saya kaget aja lari-lari teriak di lorong.", isCorrect: false, feedback: "Fokus pada reaksi pribadi." },
+                        { text: "Toko kita rugi jutaan rupiah detik itu juga.", isCorrect: false, feedback: "Tidak akurat." }
                     ]},
                     { type: "A", options: [
-                        { text: "Bagaimana kalau kita sepakati cut-off time permintaan laporan BO maksimal jam 15.00?", isCorrect: true, feedback: "Membuat SLA baru." },
-                        { text: "Tolak aja permintaan mereka besok.", isCorrect: false, feedback: "Sabotase." },
-                        { text: "Sabar aja, sebentar lagi juga mutasi.", isCorrect: false, feedback: "Mengabaikan." }
+                        { text: "Lain kali kalau EDC mati lagi, bayar pakai uangmu dulu ya.", isCorrect: false, feedback: "Tidak rasional." },
+                        { text: "Coba hafalkan buku panduan mesin EDC nanti malam.", isCorrect: false, feedback: "Solusi administratif yang tidak menyelesaikan kepanikan di lapangan." },
+                        { text: "Jika sistem bermasalah lagi, apa langkah pertama yang harus dilakukan agar area kasir tetap aman dan pelanggan tetap tenang menunggu?", isCorrect: true, feedback: "Melatih kesiapan staf (Contingency Plan) menghadapi krisis tanpa menyalahkan kepanikannya." }
                     ]}
-                ], actionPlan: "Penerbitan memo internal terkait Cut-off Time rekonsiliasi harian."
+                ], actionPlan: "Latihan simulasi 'EDC Down': Kunci laci kasir, pasang tanda 'Sistem Offline', dan minta maaf kepada pelanggan sebelum memanggil teknisi/SPV."
             },
             {
-                title: "Kasus 9: Teller vs Teller (Selisih Kas)",
-                enemy: "Gara-gara kamu over-handle shift siang, kas saya selisih 500 ribu! Kamu nggak teliti pas serah terima!",
+                title: "Kasus 9: Mengabaikan SOP Sapaan.",
+                enemy: "Ngapain SOP Sapaan, pelanggan juga gapernah merhatiin kita!",
                 avatar: "😤",
                 phases: [
                     { type: "S", options: [
-                        { text: "Kamu jangan nuduh, buktiin dulu.", isCorrect: false, feedback: "Konfrontatif." },
-                        { text: "Ada selisih Rp500.000 pada jurnal transaksi pergantian shift jam 12.00 siang tadi.", isCorrect: true, feedback: "Fokus pada angka dan log." },
-                        { text: "Kalian berdua emang pada ceroboh.", isCorrect: false, feedback: "Menghakimi dua belah pihak." }
+                        { text: "Kamu jangan sombong mentang-mentang senior, SOP ya SOP!", isCorrect: false, feedback: "Konfrontasi langsung dengan ego karyawan senior." },
+                        { text: "Dalam 3 kali kunjungan mystery guest bulan ini, kamu terdata tidak menyapa pelanggan ketika masuk toko.", isCorrect: true, feedback: "Menggunakan data (Mystery Guest) yang tak terbantahkan, tanpa menyerang masa kerjanya." },
+                        { text: "Saya tahu kamu senior, tapi kamu pembangkang.", isCorrect: false, feedback: "Memberi label negatif." }
                     ]},
                     { type: "T", options: [
-                        { text: "Selisih ini membuat laporan neraca cabang tidak balance dan kena teguran audit.", isCorrect: true, feedback: "Dampak kepatuhan/audit." },
-                        { text: "Kalian bakal saya potong gaji.", isCorrect: false, feedback: "Mengancam." },
-                        { text: "Bikin malu cabang aja.", isCorrect: false, feedback: "Personal attack." }
+                        { text: "Ketidakseragaman ini membuat program promosi nasional gagal tersampaikan, dan nilai audit layanan cabang kita anjlok di mata manajemen.", isCorrect: true, feedback: "Mengaitkan kepatuhan satu orang dengan performa keseluruhan cabang/toko." },
+                        { text: "Kamu bikin kepala toko lain menertawakan toko kita.", isCorrect: false, feedback: "Manipulasi emosional." },
+                        { text: "Saya yang kena SP dari Area Manager kalau kamu begini terus.", isCorrect: false, feedback: "Hanya melindungi diri atasan." }
                     ]},
                     { type: "A", options: [
-                        { text: "Mari kita buka rekaman CCTV dan bongkar jurnal transaksi satu per satu sekarang.", isCorrect: true, feedback: "Langkah investigasi objektif." },
-                        { text: "Ganti rugi aja berdua bagi rata.", isCorrect: false, feedback: "Tidak menyelesaikan akar masalah/prosedur." },
-                        { text: "Ya udah ikhlasin aja.", isCorrect: false, feedback: "Melanggar prosedur bank." }
+                        { text: "Pokoknya saya nggak mau tahu, hafalin kalimatnya hari ini juga.", isCorrect: false, feedback: "Penolakan (resistance) staf senior akan makin keras." },
+                        { text: "Apa kendala spesifik yang kamu rasakan dalam SOP ini, dan bagaimana kita bisa menyesuaikan nadanya agar tetap luwes.", isCorrect: true, feedback: "Akomodatif. Menghargai pengalamannya, namun tetap membimbingnya ke arah SOP." },
+                        { text: "Gimana kalau SOP-nya kamu rubah sendiri aja senyamanmu?", isCorrect: false, feedback: "Kehilangan wibawa sebagai pemimpin." }
                     ]}
-                ], actionPlan: "Investigasi silang jurnal dan CCTV, serta refreshment SOP Serah Terima Kas."
+                ], actionPlan: "Menyelipkan informasi promosi wajib (SOP) ke dalam gaya komunikasi staf yang sudah luwes tanpa harus terdengar seperti robot."
             },
             {
-                title: "Kasus 10: Sales vs Sales (Sikut Prospek)",
-                enemy: "Dia nyuri database prospek nasabah VIP saya! Kemarin saya yang telepon, hari ini dia yang closing!",
+                title: "Kasus 10: Menimbun Barang Promo.",
+                enemy: "Ini minyak goreng promo saya simpan di kolong meja buat ibu saya nanti sore beli! Gak melanggar kan? Saya bayar full kok, bukan nyolong!",
                 avatar: "🤬",
                 phases: [
                     { type: "S", options: [
-                        { text: "Saya melihat data Nasabah X dihubungi oleh A kemarin, lalu di-closing oleh B hari ini.", isCorrect: true, feedback: "Memaparkan timeline kejadian." },
-                        { text: "Kamu jangan serakah dong, rezeki udah ada yang ngatur.", isCorrect: false, feedback: "Menceramahi hal non-teknis." },
-                        { text: "Kalian berdua emang tukang sikut.", isCorrect: false, feedback: "Toxic leadership." }
+                        { text: "Kamu jangan sombong mentang-mentang senior, SOP ya SOP!", isCorrect: false, feedback: "Konfrontasi langsung dengan ego karyawan senior." },
+                        { text: "Dalam 3 kali kunjungan mystery guest bulan ini, kamu terdata tidak menggunakan standar kalimat sapaan promosi terbaru dari pusat.", isCorrect: true, feedback: "Menggunakan data (Mystery Guest) yang tak terbantahkan, tanpa menyerang masa kerjanya." },
+                        { text: "Saya tahu kamu senior, tapi kamu pembangkang.", isCorrect: false, feedback: "Memberi label negatif." }
                     ]},
                     { type: "T", options: [
-                        { text: "Konflik rebutan nasabah ini merusak kekompakan tim dan bikin nasabah bingung.", isCorrect: true, feedback: "Dampak internal & eksternal." },
-                        { text: "Bikin saya pusing ngurusin anak buah berantem.", isCorrect: false, feedback: "Keluhan pribadi." },
-                        { text: "Nanti komisi kalian saya tahan dua-duanya.", isCorrect: false, feedback: "Otoriter tanpa edukasi." }
+                        { text: "Ketidakseragaman ini membuat program promosi nasional gagal tersampaikan, dan nilai audit layanan cabang kita anjlok di mata manajemen.", isCorrect: true, feedback: "Mengaitkan kepatuhan satu orang dengan performa keseluruhan cabang/toko." },
+                        { text: "Kamu bikin kepala toko lain menertawakan toko kita.", isCorrect: false, feedback: "Manipulasi emosional." },
+                        { text: "Saya yang kena SP dari Area Manager kalau kamu begini terus.", isCorrect: false, feedback: "Hanya melindungi diri atasan." }
                     ]},
                     { type: "A", options: [
-                        { text: "Ayo kita perjelas kembali SOP tagging/penguncian database prospek di CRM agar adil.", isCorrect: true, feedback: "Perbaikan sistem (Systemic Solution)." },
-                        { text: "Udah bagi dua aja komisinya biar diam.", isCorrect: false, feedback: "Solusi instan, tidak cegah masalah berulang." },
-                        { text: "Yang penting cabang capai target, terserah siapa yang closing.", isCorrect: false, feedback: "Membiarkan budaya kanibal antar tim." }
+                        { text: "Pokoknya saya nggak mau tahu, hafalin kalimatnya hari ini juga.", isCorrect: false, feedback: "Penolakan (resistance) staf senior akan makin keras." },
+                        { text: "Apa kendala spesifik yang kamu rasakan dalam SOP baru ini, dan bagaimana kita bisa menyesuaikan nadanya agar tetap luwes namun standar informasinya tetap tersampaikan?", isCorrect: true, feedback: "Akomodatif. Menghargai pengalamannya, namun tetap membimbingnya ke arah SOP." },
+                        { text: "Gimana kalau SOP-nya kamu rubah sendiri aja senyamanmu?", isCorrect: false, feedback: "Kehilangan wibawa sebagai pemimpin." }
                     ]}
-                ], actionPlan: "Pembaruan aturan 'Rules of Engagement' dan SOP Tagging Nasabah di sistem CRM."
+                ], actionPlan: "Pembuatan Kebijakan Internal: Karyawan toko hanya diizinkan membeli barang promo Fast-Moving di jam tutup toko atau jam istirahat, sesuai batas kuota konsumen umum."
             }
         ];
 
